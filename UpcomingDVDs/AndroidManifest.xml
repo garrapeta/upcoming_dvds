@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="uk.co.dazcorp.android.upcomingdvds"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="11"
+        android:targetSdkVersion="17" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="uk.co.dazcorp.android.upcomingdvds.DVDListActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="uk.co.dazcorp.android.upcomingdvds.DVDDetailActivity"
+            android:label="@string/title_dvd_detail"
+            android:parentActivityName=".DVDListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DVDListActivity" />
+        </activity>
+        <activity
+            android:name="uk.co.dazcorp.android.upcomingdvds.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName="uk.co.dazcorp.android.upcomingdvds.DVDListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="uk.co.dazcorp.android.upcomingdvds.DVDListActivity" />
+        </activity>
+
+        <service
+            android:name="uk.co.dazcorp.android.upcomingdvds.WebService"
+            android:enabled="false"
+            android:exported="false" >
+        </service>
+
+        <provider
+            android:name="uk.co.dazcorp.android.upcomingdvds.DVDProvider"
+            android:authorities="uk.co.dazcorp.android.upcomingdvds.provider"
+            android:enabled="false"
+            android:exported="false" >
+        </provider>
+    </application>
+
+</manifest>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Upcoming DVDs</string>
+    <string name="title_dvd_detail">DVD Detail</string>
+    <string name="api_key">bye7be3mwyn6jwphp626jrf4</string>
+    <string name="api_upcoming">http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/upcoming.json?</string>
+
+</resources>
