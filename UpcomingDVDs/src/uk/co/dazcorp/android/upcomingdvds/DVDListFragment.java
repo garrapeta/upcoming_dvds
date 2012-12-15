@@ -2,11 +2,20 @@
 package uk.co.dazcorp.android.upcomingdvds;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import uk.co.dazcorp.android.upcomingdvds.dummy.DummyContent;
 
@@ -60,6 +69,10 @@ public class DVDListFragment extends ListFragment {
         }
     };
 
+    private JSONArrayAdapter mAdapter;
+    private ResponseReceiver mReceiver;
+    private ArrayList<JSONObject> mMovies = new ArrayList<JSONObject>();
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -70,11 +83,19 @@ public class DVDListFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mReceiver = new ResponseReceiver();
+        
+        mAdapter = new JSONArrayAdapter(this.getActivity(), R.layout.row_dvd_list, mMovies,
+                new String[] {
+                        ApiDetails.Upcoming.Movies.TAG_TITLE, ApiDetails.Upcoming.Movies.TAG_YEAR
 
-        // TODO: replace with a real list adapter.
-        setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
-                android.R.layout.simple_list_item_activated_1, android.R.id.text1,
-                DummyContent.ITEMS));
+                }, new int[] {
+                        R.id.list_item_title, R.id.list_item_year
+                });
+        this.setListAdapter(mAdapter);
+        
+        Intent msgIntent = new Intent(this.getActivity(), WebService.class);
+        this.getActivity().startService(msgIntent);
     }
 
     @Override
@@ -144,5 +165,54 @@ public class DVDListFragment extends ListFragment {
         }
 
         mActivatedPosition = position;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        IntentFilter filter = new IntentFilter(WebService.ACTION_RESP);
+        filter.addCategory(Intent.CATEGORY_DEFAULT);
+        this.getActivity().registerReceiver(mReceiver, filter);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        this.getActivity().unregisterReceiver(mReceiver);
+    }
+
+    public class ResponseReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // mProgress.setVisibility(View.GONE);
+            String result = intent.getExtras().getString(WebService.RESULT);
+            JSONObject upcoming = null;
+            try {
+                 upcoming = new JSONObject(result);
+
+            } catch (JSONException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            processResult(upcoming);
+
+        }
+    }
+
+    public void processResult(JSONObject upcoming) {
+        JSONArray movies;
+        try {
+            movies = upcoming.getJSONArray(ApiDetails.Upcoming.TAG_MOVIES);
+            for (int i = 0; i < movies.length(); i++) {                
+                mAdapter.add(movies.getJSONObject(i));
+            }
+            mAdapter.notifyDataSetChanged();
+            
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+
     }
 }

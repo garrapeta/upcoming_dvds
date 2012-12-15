@@ -46,7 +46,6 @@ public class DVDListActivity extends FragmentActivity implements DVDListFragment
                     .setActivateOnItemClick(true);
         }
 
-        // TODO: If exposing deep links into your app, handle intents here.
     }
 
     /**
@@ -74,4 +73,5 @@ public class DVDListActivity extends FragmentActivity implements DVDListFragment
             startActivity(detailIntent);
         }
     }
+
 }

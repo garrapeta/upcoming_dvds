@@ -24,10 +24,10 @@ public class ApiDetails {
         // END OUTPUT
 
         // JSON NODES
-        private static final String TAG_TOTAL = "total";
-        private static final String TAG_MOVIES = "movies";
-        private static final String TAG_LINKS = "links";
-        private static final String TAG_LINK_TEMPLATE = "link_template";
+        public static final String TAG_TOTAL = "total";
+        public static final String TAG_MOVIES = "movies";
+        public static final String TAG_LINKS = "links";
+        public static final String TAG_LINK_TEMPLATE = "link_template";
 
         public Upcoming(String input_string) {
             JSONObject input;
@@ -65,18 +65,18 @@ public class ApiDetails {
 
         public static final class Movies {
             // JSON NODES
-            private static final String TAG_ID = "id";
-            private static final String TAG_TITLE = "title";
-            private static final String TAG_YEAR = "year";
-            private static final String TAG_MPAA_RATING = "mpaa_rating";
-            private static final String TAG_RUNTIME = "runtime";
-            private static final String TAG_RELEASE_DATES = "release_dates";
-            private static final String TAG_RATINGS = "ratings";
-            private static final String TAG_SYNOPSIS = "synopsis";
-            private static final String TAG_POSTERS = "posters";
-            private static final String TAG_ABRIDGED_CAST = "abridged_cast";
-            private static final String TAG_ALTERNATE_IDS = "alternate_ids";
-            private static final String TAG_LINKS = "links";
+            public static final String TAG_ID = "id";
+            public static final String TAG_TITLE = "title";
+            public static final String TAG_YEAR = "year";
+            public static final String TAG_MPAA_RATING = "mpaa_rating";
+            public static final String TAG_RUNTIME = "runtime";
+            public static final String TAG_RELEASE_DATES = "release_dates";
+            public static final String TAG_RATINGS = "ratings";
+            public static final String TAG_SYNOPSIS = "synopsis";
+            public static final String TAG_POSTERS = "posters";
+            public static final String TAG_ABRIDGED_CAST = "abridged_cast";
+            public static final String TAG_ALTERNATE_IDS = "alternate_ids";
+            public static final String TAG_LINKS = "links";
 
             public Movies(JSONObject jsonObject) {
                 try {

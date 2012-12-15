@@ -6,7 +6,7 @@ import android.util.Log;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-class urlGenerator {
+class UrlGenerator {
     private static String TAG = "UrlGenerator";
     private static String API_KEY = "apikey";
     private static String mApiKey = "bye7be3mwyn6jwphp626jrf4";
@@ -14,7 +14,7 @@ class urlGenerator {
 
     private String mCurrentURL;
 
-    public urlGenerator(String url, boolean isBase) {
+    public UrlGenerator(String url, boolean isBase) {
         if (isBase) {
             setBaseUrlTo(url);
         } else {

@@ -13,23 +13,47 @@ import org.apache.http.client.methods.HttpGet;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Locale;
 
 public class WebService extends IntentService {
-    private static final boolean LOGURI = false;
-    private static final String TAG = "WebService";
-    private static final String ERROR_MSG = "error";
+    private static final boolean LOGURI = true;
+    public static final String TAG = "WebService";
+    public static final String ERROR_MSG = "error";
+    public static final String RESULT = "result";
+    public static final String ACTION_RESP = "uk.co.dazcorp.android.upcomingdvds.SERVICE_COMPLETE";
 
     public WebService() {
         super("IntentService");
     }
 
-
     @Override
     protected void onHandleIntent(Intent intent) {
-        // TODO Auto-generated method stub
-        // Handle the call to process the request
-        doRequest(null);
+        UrlGenerator gen = new UrlGenerator(UrlGenerator.UPCOMING_DVD_API, true);
+        String locale = Locale.getDefault().getCountry();
+        if (locale.equals("GB")) {
+            locale = "uk";
+        }
+        gen.addValue(ApiDetails.Upcoming.COUNTRY, locale);
+        gen.addValue(ApiDetails.Upcoming.PAGE_LIMIT, Integer.toString(16));
+        String result = doRequest(getURIfromString(gen.getCurrentURL()));
+        result = result.trim();
+        Intent broadcastIntent = new Intent();
+        broadcastIntent.setAction(ACTION_RESP);
+        broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
+        broadcastIntent.putExtra(RESULT, result);
+        sendBroadcast(broadcastIntent);
 
+    }
+
+    private URI getURIfromString(String url) {
+        URI uri = null;
+        try {
+            uri = new URI(url);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        return uri;
     }
 
     private String doRequest(URI uri) {
