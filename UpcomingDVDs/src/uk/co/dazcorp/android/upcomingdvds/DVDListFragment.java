@@ -36,6 +36,8 @@ public class DVDListFragment extends ListFragment {
      */
     private static final String STATE_ACTIVATED_POSITION = "activated_position";
 
+    private static final String MOVIES_ARRAY = null;
+
     /**
      * The fragment's current callback object, which is notified of list item
      * clicks.
@@ -56,7 +58,7 @@ public class DVDListFragment extends ListFragment {
         /**
          * Callback for when an item has been selected.
          */
-        public void onItemSelected(String id);
+        public void onItemSelected(JSONObject item);
     }
 
     /**
@@ -65,7 +67,7 @@ public class DVDListFragment extends ListFragment {
      */
     private static Callbacks sDummyCallbacks = new Callbacks() {
         @Override
-        public void onItemSelected(String id) {
+        public void onItemSelected(JSONObject item) {
         }
     };
 
@@ -94,8 +96,7 @@ public class DVDListFragment extends ListFragment {
                 });
         this.setListAdapter(mAdapter);
         
-        Intent msgIntent = new Intent(this.getActivity(), WebService.class);
-        this.getActivity().startService(msgIntent);
+        DVDListActivity.refreshData(getActivity());
     }
 
     @Override
@@ -134,7 +135,7 @@ public class DVDListFragment extends ListFragment {
 
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
-        mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
+        mCallbacks.onItemSelected(mAdapter.getItem(position));
     }
 
     @Override

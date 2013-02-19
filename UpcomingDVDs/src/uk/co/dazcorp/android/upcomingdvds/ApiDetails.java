@@ -86,6 +86,7 @@ public class ApiDetails {
                     mMPAARating = jsonObject.getString(TAG_MPAA_RATING);
                     mRuntime = jsonObject.getString(TAG_RUNTIME);
                     mSynopsis = jsonObject.getString(TAG_SYNOPSIS);
+                    mReleaseDates = new ReleaseDates(jsonObject.getJSONObject(TAG_RELEASE_DATES));
                     // TODO: The other parts of the Movie object
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
@@ -100,7 +101,7 @@ public class ApiDetails {
             public String mYear;
             public String mMPAARating;
             public String mRuntime;
-            public ReleaseDates mReleaseDates[];
+            public ReleaseDates mReleaseDates;
             public Ratings mRatings[];
             public String mSynopsis;
             public Posters mPosters[];
@@ -109,7 +110,13 @@ public class ApiDetails {
             public Links mLinks[];
 
             public static final class ReleaseDates {
-                public String mTheater;
+                public ReleaseDates(JSONObject jsonObject) throws JSONException {
+                    mDVDDate = jsonObject.optString("dvd");
+                    mTheaterDate = jsonObject.optString("theater");
+                }
+
+                public String mDVDDate;
+                public String mTheaterDate;
             }
 
             public static final class Ratings {

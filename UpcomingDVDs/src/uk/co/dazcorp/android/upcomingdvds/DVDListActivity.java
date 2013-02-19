@@ -1,9 +1,14 @@
 
 package uk.co.dazcorp.android.upcomingdvds;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.Menu;
+import android.view.MenuItem;
+
+import org.json.JSONObject;
 
 /**
  * An activity representing a list of DVDs. This activity has different
@@ -21,6 +26,25 @@ import android.support.v4.app.FragmentActivity;
  * interface to listen for item selections.
  */
 public class DVDListActivity extends FragmentActivity implements DVDListFragment.Callbacks {
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int featureId = item.getItemId();
+        switch (featureId) {
+            case (R.id.list_refresh):
+                refreshData(this);
+                return true;
+            default:
+                return super.onMenuItemSelected(featureId, item);
+        }
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        this.getMenuInflater().inflate(R.menu.list_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -53,13 +77,13 @@ public class DVDListActivity extends FragmentActivity implements DVDListFragment
      * the item with the given ID was selected.
      */
     @Override
-    public void onItemSelected(String id) {
+    public void onItemSelected(JSONObject item) {
         if (mTwoPane) {
             // In two-pane mode, show the detail view in this activity by
             // adding or replacing the detail fragment using a
             // fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(DVDDetailFragment.ARG_ITEM_ID, id);
+            arguments.putString(DVDDetailFragment.ARG_ITEM_ID, item.toString());
             DVDDetailFragment fragment = new DVDDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
@@ -69,9 +93,14 @@ public class DVDListActivity extends FragmentActivity implements DVDListFragment
             // In single-pane mode, simply start the detail activity
             // for the selected item ID.
             Intent detailIntent = new Intent(this, DVDDetailActivity.class);
-            detailIntent.putExtra(DVDDetailFragment.ARG_ITEM_ID, id);
+            detailIntent.putExtra(DVDDetailFragment.ARG_ITEM_ID, item.toString());
             startActivity(detailIntent);
         }
+    }
+
+    public static void refreshData(Context context) {
+        Intent msgIntent = new Intent(context, WebService.class);
+        context.startService(msgIntent);
     }
 
 }
