@@ -2,7 +2,6 @@
 package uk.co.dazcorp.android.upcomingdvds;
 
 import android.content.Context;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,16 +9,20 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.novoda.imageloader.core.model.ImageTag;
+import com.novoda.imageloader.core.model.ImageTagFactory;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 public class JSONArrayAdapter extends ArrayAdapter<JSONObject> {
-    private int mResource;
-    private LayoutInflater mInflater;
+    private final int mResource;
+    private final LayoutInflater mInflater;
     protected String[] mFrom;
     protected int[] mTo;
+    private final ImageTagFactory imageTagFactory;
 
     public JSONArrayAdapter(Context context, int textViewResourceId, ArrayList<JSONObject> objects,
             String[] from, int[] to) {
@@ -28,6 +31,10 @@ public class JSONArrayAdapter extends ArrayAdapter<JSONObject> {
         mResource = textViewResourceId;
         mFrom = from;
         mTo = to;
+
+        imageTagFactory = new ImageTagFactory(this.getContext(),
+                R.drawable.ic_launcher);
+        imageTagFactory.setErrorImageId(R.drawable.ic_launcher);
     }
 
     @Override
@@ -38,7 +45,7 @@ public class JSONArrayAdapter extends ArrayAdapter<JSONObject> {
         } else {
             view = convertView;
         }
-        JSONObject item = (JSONObject) getItem(position);
+        JSONObject item = getItem(position);
         bindView(view, item);
 
         return view;
@@ -72,11 +79,12 @@ public class JSONArrayAdapter extends ArrayAdapter<JSONObject> {
     }
     
     public String getText(JSONObject json, String from){
+        // TODO: Make this split the from string on . so we can search child
+        // objects too
         if (json.has(from)){
             try {
                 return json.getString(from);
             } catch (JSONException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -85,11 +93,17 @@ public class JSONArrayAdapter extends ArrayAdapter<JSONObject> {
     }
 
     public void setViewImage(ImageView v, String value) {
-        try {
-            v.setImageResource(Integer.parseInt(value));
-        } catch (NumberFormatException nfe) {
-            v.setImageURI(Uri.parse(value));
-        }
+
+        // Build image tag with remote image URL
+        ImageTag tag = imageTagFactory.build(value);
+        v.setTag(tag);
+        DVDApplication.getImageManager().getLoader().load(v);
+
+        // try {
+        // v.setImageResource(Integer.parseInt(value));
+        // } catch (NumberFormatException nfe) {
+        // v.setImageURI(Uri.parse(value));
+        // }
     }
 
     public void setViewText(TextView v, String text) {

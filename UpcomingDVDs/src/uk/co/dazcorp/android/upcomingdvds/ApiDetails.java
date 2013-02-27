@@ -1,9 +1,9 @@
 
 package uk.co.dazcorp.android.upcomingdvds;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONArray;
 
 public class ApiDetails {
     public static final class Upcoming {
@@ -87,6 +87,7 @@ public class ApiDetails {
                     mRuntime = jsonObject.getString(TAG_RUNTIME);
                     mSynopsis = jsonObject.getString(TAG_SYNOPSIS);
                     mReleaseDates = new ReleaseDates(jsonObject.getJSONObject(TAG_RELEASE_DATES));
+                    mPosters = new Posters(jsonObject.getJSONObject(TAG_POSTERS));
                     // TODO: The other parts of the Movie object
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
@@ -104,7 +105,7 @@ public class ApiDetails {
             public ReleaseDates mReleaseDates;
             public Ratings mRatings[];
             public String mSynopsis;
-            public Posters mPosters[];
+            public Posters mPosters;
             public Cast mCast[];
             public AlternateIds mAltIds[];
             public Links mLinks[];
@@ -127,6 +128,14 @@ public class ApiDetails {
             }
 
             public static final class Posters {
+                public static final String TAG_THUMBNAIL = "thumbnail";
+
+                public Posters(JSONObject jsonObject) {
+                    mThumbnail = jsonObject.optString(TAG_THUMBNAIL);
+                    mProfile = jsonObject.optString("profile");
+                    mDetailed = jsonObject.optString("detailed");
+                    mOriginal = jsonObject.optString("original");
+                }
                 public String mThumbnail;
                 public String mProfile;
                 public String mDetailed;

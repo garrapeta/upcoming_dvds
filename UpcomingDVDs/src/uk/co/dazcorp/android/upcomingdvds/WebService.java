@@ -35,7 +35,7 @@ public class WebService extends IntentService {
         if (locale.equals("GB")) {
             locale = "uk";
         }
-        gen.addValue(ApiDetails.Upcoming.COUNTRY, locale);
+        // gen.addValue(ApiDetails.Upcoming.COUNTRY, locale);
         gen.addValue(ApiDetails.Upcoming.PAGE_LIMIT, Integer.toString(16));
         String result = doRequest(getURIfromString(gen.getCurrentURL()));
         result = result.trim();

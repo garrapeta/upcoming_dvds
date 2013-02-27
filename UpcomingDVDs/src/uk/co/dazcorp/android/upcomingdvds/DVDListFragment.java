@@ -17,8 +17,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import uk.co.dazcorp.android.upcomingdvds.dummy.DummyContent;
-
 /**
  * A list fragment representing a list of DVDs. This fragment also supports
  * tablet devices by allowing list items to be given an 'activated' state upon
@@ -73,7 +71,7 @@ public class DVDListFragment extends ListFragment {
 
     private JSONArrayAdapter mAdapter;
     private ResponseReceiver mReceiver;
-    private ArrayList<JSONObject> mMovies = new ArrayList<JSONObject>();
+    private final ArrayList<JSONObject> mMovies = new ArrayList<JSONObject>();
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -89,10 +87,11 @@ public class DVDListFragment extends ListFragment {
         
         mAdapter = new JSONArrayAdapter(this.getActivity(), R.layout.row_dvd_list, mMovies,
                 new String[] {
-                        ApiDetails.Upcoming.Movies.TAG_TITLE, ApiDetails.Upcoming.Movies.TAG_YEAR
+                        ApiDetails.Upcoming.Movies.TAG_TITLE, ApiDetails.Upcoming.Movies.TAG_YEAR,
+                        ApiDetails.Upcoming.Movies.Posters.TAG_THUMBNAIL
 
                 }, new int[] {
-                        R.id.list_item_title, R.id.list_item_year
+                        R.id.list_item_title, R.id.list_item_year, R.id.list_item_thumbnail
                 });
         this.setListAdapter(mAdapter);
         
