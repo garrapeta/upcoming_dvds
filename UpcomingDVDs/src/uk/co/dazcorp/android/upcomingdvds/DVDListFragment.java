@@ -153,6 +153,8 @@ public class DVDListFragment extends ListFragment {
             // Serialize and persist the activated item position.
             outState.putInt(STATE_ACTIVATED_POSITION, mActivatedPosition);
         }
+        // TODO: Save the list of movies here so we don't refetch on orientation
+        // change
     }
 
     /**

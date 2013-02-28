@@ -11,6 +11,7 @@ class UrlGenerator {
     private static String API_KEY = "apikey";
     private static String mApiKey = "bye7be3mwyn6jwphp626jrf4";
     public static String UPCOMING_DVD_API = "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/upcoming.json?";
+    public static String UPCOMING_MOVIES_API = "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/upcoming.json?";
 
     private String mCurrentURL;
 

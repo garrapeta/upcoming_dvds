@@ -32,7 +32,9 @@ public class WebService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         // Not much to do here yet as we only handle one intent
-        UrlGenerator gen = new UrlGenerator(UrlGenerator.UPCOMING_DVD_API, true);
+        // UrlGenerator gen = new UrlGenerator(UrlGenerator.UPCOMING_DVD_API,
+        // true);
+        UrlGenerator gen = new UrlGenerator(UrlGenerator.UPCOMING_MOVIES_API, true);
         String locale = Locale.getDefault().getCountry();
         if (locale.equals("GB")) {
             locale = "uk";

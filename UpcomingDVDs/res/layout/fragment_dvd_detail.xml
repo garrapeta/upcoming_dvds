@@ -2,21 +2,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/dvd_detail_scroll"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:fillViewport="true" >
 
     <LinearLayout
         android:id="@+id/dvd_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp"
         tools:context=".DVDDetailFragment" >
 
         <ImageView
             android:id="@+id/dvd_detail_poster"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher" />
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter" />
 
         <TextView
             android:id="@+id/dvd_detail_title"

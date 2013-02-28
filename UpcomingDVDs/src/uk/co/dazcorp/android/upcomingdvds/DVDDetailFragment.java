@@ -33,7 +33,6 @@ public class DVDDetailFragment extends Fragment {
      * The content this fragment is presenting.
      */
     private Movies mMovie;
-
     private ImageTagFactory imageTagFactory;
 
     /**
@@ -51,10 +50,8 @@ public class DVDDetailFragment extends Fragment {
             try {
                 mMovie = new Movies(new JSONObject(getArguments().getString(ARG_ITEM_ID)));
             } catch (JSONException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-
             imageTagFactory = new ImageTagFactory(this.getActivity(), R.drawable.ic_launcher);
             imageTagFactory.setErrorImageId(R.drawable.ic_launcher);
         }
@@ -67,6 +64,8 @@ public class DVDDetailFragment extends Fragment {
             ((TextView) rootView.findViewById(R.id.dvd_detail_title)).setText(mMovie.mTitle);
             ((TextView) rootView.findViewById(R.id.dvd_detail_year)).setText(mMovie.mYear);
             ((TextView) rootView.findViewById(R.id.dvd_detail_synopsis)).setText(mMovie.mSynopsis);
+            // Should move down the list of poster sizes if the largest doesn't
+            // load
             ImageView v = (ImageView) rootView.findViewById(R.id.dvd_detail_poster);
             ImageTag tag = imageTagFactory.build(mMovie.mPosters.mOriginal);
             v.setTag(tag);
