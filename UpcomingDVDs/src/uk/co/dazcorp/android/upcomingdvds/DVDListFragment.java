@@ -8,7 +8,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
 
 import org.json.JSONArray;
@@ -84,18 +86,25 @@ public class DVDListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mReceiver = new ResponseReceiver();
-        
         mAdapter = new JSONArrayAdapter(this.getActivity(), R.layout.row_dvd_list, mMovies,
                 new String[] {
                         ApiDetails.Upcoming.Movies.TAG_TITLE, ApiDetails.Upcoming.Movies.TAG_YEAR,
-                        ApiDetails.Upcoming.Movies.Posters.TAG_THUMBNAIL
+                        ApiDetails.Upcoming.Movies.Posters.TAG_THUMBNAIL,
+                        ApiDetails.Upcoming.Movies.ReleaseDates.TAG_DVDDATE
 
                 }, new int[] {
-                        R.id.list_item_title, R.id.list_item_year, R.id.list_item_thumbnail
+                        R.id.list_item_title, R.id.list_item_year, R.id.list_item_thumbnail,
+                        R.id.list_item_release_date
                 });
         this.setListAdapter(mAdapter);
-        
+
         DVDListActivity.refreshData(getActivity());
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        return inflater.inflate(R.layout.fragment_dvd_list, null);
     }
 
     @Override
@@ -185,10 +194,12 @@ public class DVDListFragment extends ListFragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             // mProgress.setVisibility(View.GONE);
+            // TODO: fancy spinning refresh in actionbar?
+
             String result = intent.getExtras().getString(WebService.RESULT);
             JSONObject upcoming = null;
             try {
-                 upcoming = new JSONObject(result);
+                upcoming = new JSONObject(result);
 
             } catch (JSONException e) {
                 // TODO Auto-generated catch block
@@ -201,18 +212,19 @@ public class DVDListFragment extends ListFragment {
 
     public void processResult(JSONObject upcoming) {
         JSONArray movies;
-        try {
-            movies = upcoming.getJSONArray(ApiDetails.Upcoming.TAG_MOVIES);
-            for (int i = 0; i < movies.length(); i++) {                
-                mAdapter.add(movies.getJSONObject(i));
-            }
-            mAdapter.notifyDataSetChanged();
-            
-        } catch (JSONException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        
+        if (upcoming != null) {
+            try {
+                movies = upcoming.getJSONArray(ApiDetails.Upcoming.TAG_MOVIES);
+                for (int i = 0; i < movies.length(); i++) {
+                    mAdapter.add(movies.getJSONObject(i));
+                }
+                mAdapter.notifyDataSetChanged();
 
+            } catch (JSONException e) {
+                // TODO Do something here
+                e.printStackTrace();
+            }
+
+        }
     }
 }

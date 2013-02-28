@@ -1,32 +1,43 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/dvd_detail"
+    android:id="@+id/dvd_detail_scroll"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    tools:context=".DVDDetailFragment" >
+    android:layout_height="match_parent" >
 
-    <TextView
-        android:id="@+id/dvd_detail_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Monsters Inc."
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+    <LinearLayout
+        android:id="@+id/dvd_detail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        tools:context=".DVDDetailFragment" >
 
-    <TextView
-        android:id="@+id/dvd_detail_year"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="2012"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        <ImageView
+            android:id="@+id/dvd_detail_poster"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_launcher" />
 
-    <TextView
-        android:id="@+id/dvd_detail_synopsis"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Small Text"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        <TextView
+            android:id="@+id/dvd_detail_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Monsters Inc."
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/dvd_detail_year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2012"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
+        <TextView
+            android:id="@+id/dvd_detail_synopsis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Small Text"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+    </LinearLayout>
+
+</ScrollView>

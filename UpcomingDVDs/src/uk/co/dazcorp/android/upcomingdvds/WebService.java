@@ -22,9 +22,11 @@ public class WebService extends IntentService {
     public static final String ERROR_MSG = "error";
     public static final String RESULT = "result";
     public static final String ACTION_RESP = "uk.co.dazcorp.android.upcomingdvds.SERVICE_COMPLETE";
+    private AndroidHttpClient mClient;
 
     public WebService() {
         super("IntentService");
+        mClient = AndroidHttpClient.newInstance(null);
     }
 
     @Override
@@ -35,7 +37,7 @@ public class WebService extends IntentService {
         if (locale.equals("GB")) {
             locale = "uk";
         }
-        // gen.addValue(ApiDetails.Upcoming.COUNTRY, locale);
+        gen.addValue(ApiDetails.Upcoming.COUNTRY, locale);
         gen.addValue(ApiDetails.Upcoming.PAGE_LIMIT, Integer.toString(16));
         String result = doRequest(getURIfromString(gen.getCurrentURL()));
         result = result.trim();
@@ -65,10 +67,12 @@ public class WebService extends IntentService {
         String result = null;
         try {
             BufferedReader in = null;
-            AndroidHttpClient client = AndroidHttpClient.newInstance(null);
+            if (mClient == null) {
+                mClient = AndroidHttpClient.newInstance(null);
+            }
             HttpGet request = new HttpGet();
             request.setURI(uri);
-            HttpResponse response = client.execute(request);
+            HttpResponse response = mClient.execute(request);
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
                 StringBuffer sb = new StringBuffer("");
@@ -82,11 +86,14 @@ public class WebService extends IntentService {
                 result = page;
             } else
                 result = ERROR_MSG;
-            client.close();
+            mClient.close();
 
         } catch (Exception e) {
             result = ERROR_MSG;
             e.printStackTrace();
+        } finally {
+            // Close leaked client if we get an exception
+            mClient.close();
         }
         return result;
     }

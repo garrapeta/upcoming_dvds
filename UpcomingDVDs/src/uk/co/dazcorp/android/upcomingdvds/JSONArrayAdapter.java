@@ -32,8 +32,7 @@ public class JSONArrayAdapter extends ArrayAdapter<JSONObject> {
         mFrom = from;
         mTo = to;
 
-        imageTagFactory = new ImageTagFactory(this.getContext(),
-                R.drawable.ic_launcher);
+        imageTagFactory = new ImageTagFactory(this.getContext(), R.drawable.ic_launcher);
         imageTagFactory.setErrorImageId(R.drawable.ic_launcher);
     }
 
@@ -77,11 +76,26 @@ public class JSONArrayAdapter extends ArrayAdapter<JSONObject> {
             }
         }
     }
-    
-    public String getText(JSONObject json, String from){
-        // TODO: Make this split the from string on . so we can search child
-        // objects too
-        if (json.has(from)){
+
+    public String getText(JSONObject json, String from) {
+        if (from.contains(".")) {
+            // split the value
+            String[] split = from.split("\\.");
+            if (json.has(split[0])) {
+                try {
+                    json = json.getJSONObject(split[0]);
+                } catch (JSONException e1) {
+                    e1.printStackTrace();
+                }
+                if (json.has(split[1])) {
+                    try {
+                        return json.getString(split[1]);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        } else if (json.has(from)) {
             try {
                 return json.getString(from);
             } catch (JSONException e) {

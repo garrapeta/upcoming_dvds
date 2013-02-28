@@ -116,6 +116,8 @@ public class ApiDetails {
                     mTheaterDate = jsonObject.optString("theater");
                 }
 
+                public static final String TAG_DVDDATE = "release_dates.dvd";
+                public static final String TAG_THEATERDATE = "release_dates.theater";
                 public String mDVDDate;
                 public String mTheaterDate;
             }
@@ -128,10 +130,10 @@ public class ApiDetails {
             }
 
             public static final class Posters {
-                public static final String TAG_THUMBNAIL = "thumbnail";
+                public static final String TAG_THUMBNAIL = "posters.thumbnail";
 
                 public Posters(JSONObject jsonObject) {
-                    mThumbnail = jsonObject.optString(TAG_THUMBNAIL);
+                    mThumbnail = jsonObject.optString("thumbnail");
                     mProfile = jsonObject.optString("profile");
                     mDetailed = jsonObject.optString("detailed");
                     mOriginal = jsonObject.optString("original");

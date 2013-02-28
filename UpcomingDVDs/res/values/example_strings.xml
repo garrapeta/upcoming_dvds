@@ -2,6 +2,6 @@
 <resources>
     <string name="title">Raavanan (Villain)</string>
     <string name="year">2010</string>
-    <string name="release_type">theater</string>
+    <string name="release_type">DVD: </string>
     <string name="release_date">2010-06-18</string>
 </resources>
