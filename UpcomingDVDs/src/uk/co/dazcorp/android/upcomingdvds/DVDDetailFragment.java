@@ -64,6 +64,11 @@ public class DVDDetailFragment extends Fragment {
             ((TextView) rootView.findViewById(R.id.dvd_detail_title)).setText(mMovie.mTitle);
             ((TextView) rootView.findViewById(R.id.dvd_detail_year)).setText(mMovie.mYear);
             ((TextView) rootView.findViewById(R.id.dvd_detail_synopsis)).setText(mMovie.mSynopsis);
+            ((TextView) rootView.findViewById(R.id.dvd_detail_mpaa_rating))
+                    .setText(mMovie.mMPAARating);
+            ((TextView) rootView.findViewById(R.id.dvd_detail_runtime)).setText(mMovie.mRuntime
+                    + " minutes");
+
             // Should move down the list of poster sizes if the largest doesn't
             // load
             ImageView v = (ImageView) rootView.findViewById(R.id.dvd_detail_poster);

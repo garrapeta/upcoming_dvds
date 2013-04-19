@@ -7,5 +7,8 @@
     <string name="api_upcoming">http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/upcoming.json?</string>
     <string name="refresh">Refresh</string>
     <string name="zero_results">Zero results</string>
+    <string name="movie_poster">Movie Poster</string>
+    <string name="release_dates_">Release dates:</string>
+    <string name="synopsis_">Synopsis:</string>
 
 </resources>

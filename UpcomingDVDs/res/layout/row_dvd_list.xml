@@ -9,9 +9,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        android:maxHeight="80dp"
+        android:maxWidth="40dp"
         android:padding="8dp"
         android:scaleType="fitXY"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/ic_launcher" android:contentDescription="@string/movie_poster"/>
 
     <LinearLayout
         android:id="@+id/inner"
