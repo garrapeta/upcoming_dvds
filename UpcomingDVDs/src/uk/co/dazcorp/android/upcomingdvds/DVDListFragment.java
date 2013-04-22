@@ -6,12 +6,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,7 +38,7 @@ public class DVDListFragment extends ListFragment {
      */
     private static final String STATE_ACTIVATED_POSITION = "activated_position";
 
-    private static final String MOVIES_ARRAY = null;
+    private static final String MOVIES_DATA = "movies_data";
 
     /**
      * The fragment's current callback object, which is notified of list item
@@ -75,6 +77,14 @@ public class DVDListFragment extends ListFragment {
     private ResponseReceiver mReceiver;
     private final ArrayList<JSONObject> mMovies = new ArrayList<JSONObject>();
 
+    private SharedPreferences mPrefs;
+
+    private final String MOVIES_TIME = "movies_timestamp";
+    private static final String PREFS = "dvdlistprefs";
+
+    private static final Long HOUR = (long) 3600000;
+
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -85,6 +95,7 @@ public class DVDListFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         mReceiver = new ResponseReceiver();
         mAdapter = new JSONArrayAdapter(this.getActivity(), R.layout.row_dvd_list, mMovies,
                 new String[] {
@@ -98,7 +109,27 @@ public class DVDListFragment extends ListFragment {
                 });
         this.setListAdapter(mAdapter);
 
-        DVDListActivity.refreshData(getActivity());
+        mPrefs = getActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        String movies = mPrefs.getString(MOVIES_DATA, null);
+        Long savedAt = mPrefs.getLong(MOVIES_TIME, 0);
+        if (movies != null) {
+            // Have saved movies, use them
+            processResult(movies);
+        }
+        if (System.currentTimeMillis() > savedAt + HOUR) {
+            DVDListActivity.refreshData(getActivity());
+        }
+
+    }
+
+    private void processResult(String movies) {
+        try {
+            processResult(new JSONObject(movies));
+        } catch (JSONException e) {
+            Toast.makeText(getActivity(), "Parsing the feed went wrong!", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -189,6 +220,7 @@ public class DVDListFragment extends ListFragment {
     @Override
     public void onPause() {
         super.onPause();
+
         this.getActivity().unregisterReceiver(mReceiver);
     }
 
@@ -202,9 +234,15 @@ public class DVDListFragment extends ListFragment {
             JSONObject upcoming = null;
             try {
                 upcoming = new JSONObject(result);
+                // Save some data
+                SharedPreferences.Editor ed = mPrefs.edit();
+                ed.putString(MOVIES_DATA, result);
+                ed.putLong(MOVIES_TIME, System.currentTimeMillis());
+                ed.commit();
 
             } catch (JSONException e) {
-                // TODO Auto-generated catch block
+                Toast.makeText(getActivity(), "Parsing the feed went wrong!", Toast.LENGTH_LONG)
+                        .show();
                 e.printStackTrace();
             }
             processResult(upcoming);
@@ -223,7 +261,8 @@ public class DVDListFragment extends ListFragment {
                 mAdapter.notifyDataSetChanged();
 
             } catch (JSONException e) {
-                // TODO Do something here
+                Toast.makeText(getActivity(), "Parsing the feed went wrong!", Toast.LENGTH_LONG)
+                        .show();
                 e.printStackTrace();
             }
 

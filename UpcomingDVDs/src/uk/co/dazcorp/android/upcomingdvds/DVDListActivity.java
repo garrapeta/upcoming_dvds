@@ -1,12 +1,15 @@
 
 package uk.co.dazcorp.android.upcomingdvds;
 
+import android.app.ActionBar;
+import android.app.ActionBar.OnNavigationListener;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 
 import org.json.JSONObject;
 
@@ -25,7 +28,12 @@ import org.json.JSONObject;
  * This activity also implements the required {@link DVDListFragment.Callbacks}
  * interface to listen for item selections.
  */
-public class DVDListActivity extends FragmentActivity implements DVDListFragment.Callbacks {
+public class DVDListActivity extends FragmentActivity implements DVDListFragment.Callbacks,
+        OnNavigationListener {
+
+    public static final int VIEW_LIST = 0;
+    public static final int VIEW_GRID = 1;
+    public int CURRENT_VIEW = 0;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -69,6 +77,12 @@ public class DVDListActivity extends FragmentActivity implements DVDListFragment
             ((DVDListFragment) getSupportFragmentManager().findFragmentById(R.id.dvd_list))
                     .setActivateOnItemClick(true);
         }
+        Context context = this.getActionBar().getThemedContext();
+        ArrayAdapter<CharSequence> list = ArrayAdapter.createFromResource(context, R.array.menu,
+                android.R.layout.simple_list_item_1);
+        list.setDropDownViewResource(android.R.layout.simple_list_item_1);
+        getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        getActionBar().setListNavigationCallbacks(list, this);
 
     }
 
@@ -101,6 +115,12 @@ public class DVDListActivity extends FragmentActivity implements DVDListFragment
     public static void refreshData(Context context) {
         Intent msgIntent = new Intent(context, WebService.class);
         context.startService(msgIntent);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+        CURRENT_VIEW = itemPosition;
+        return true;
     }
 
 }
