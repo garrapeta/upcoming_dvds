@@ -31,8 +31,7 @@ import org.json.JSONObject;
 public class DVDListActivity extends FragmentActivity implements DVDListFragment.Callbacks,
         OnNavigationListener {
 
-    public static final int VIEW_LIST = 0;
-    public static final int VIEW_GRID = 1;
+    // The type of content we are currently looking at
     public int CURRENT_VIEW = 0;
 
     @Override
@@ -40,7 +39,7 @@ public class DVDListActivity extends FragmentActivity implements DVDListFragment
         int featureId = item.getItemId();
         switch (featureId) {
             case (R.id.list_refresh):
-                refreshData(this);
+                refreshData(this, CURRENT_VIEW);
                 return true;
             default:
                 return super.onMenuItemSelected(featureId, item);
@@ -112,15 +111,29 @@ public class DVDListActivity extends FragmentActivity implements DVDListFragment
         }
     }
 
-    public static void refreshData(Context context) {
+    public static void refreshData(Context context, int api) {
         Intent msgIntent = new Intent(context, WebService.class);
+        if (api == DVDApplication.VIEW_DVD)
+            msgIntent.putExtra(WebService.API, UrlGenerator.UPCOMING_DVD_API);
+        if (api == DVDApplication.VIEW_MOVIES)
+            msgIntent.putExtra(WebService.API, UrlGenerator.UPCOMING_MOVIES_API);
         context.startService(msgIntent);
+    }
+
+    public void refreshData(Context context) {
+        refreshData(context, CURRENT_VIEW);
+
     }
 
     @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-        CURRENT_VIEW = itemPosition;
+        if (CURRENT_VIEW != itemPosition) {
+            CURRENT_VIEW = itemPosition;
+            refreshData(this, CURRENT_VIEW);
+        }
+
         return true;
     }
+
 
 }

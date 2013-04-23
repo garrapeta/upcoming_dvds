@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.novoda.imageloader.core.model.ImageTag;
@@ -61,6 +62,7 @@ public class DVDDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_dvd_detail, container, false);
         if (mMovie != null) {
+
             ((TextView) rootView.findViewById(R.id.dvd_detail_title)).setText(mMovie.mTitle);
             ((TextView) rootView.findViewById(R.id.dvd_detail_year)).setText(mMovie.mYear);
             ((TextView) rootView.findViewById(R.id.dvd_detail_synopsis)).setText(mMovie.mSynopsis);
@@ -68,6 +70,16 @@ public class DVDDetailFragment extends Fragment {
                     .setText(mMovie.mMPAARating);
             ((TextView) rootView.findViewById(R.id.dvd_detail_runtime)).setText(mMovie.mRuntime
                     + " minutes");
+            if (mMovie.mReleaseDates != null) {
+                TextView dvd = new TextView(getActivity());
+                dvd.setText("DVD: " + mMovie.mReleaseDates.mDVDDate);
+                TextView theater = new TextView(getActivity());
+                theater.setText("Theater: " + mMovie.mReleaseDates.mTheaterDate);
+                ((LinearLayout) rootView.findViewById(R.id.dvd_detail_release_dates_layout))
+                        .addView(dvd);
+                ((LinearLayout) rootView.findViewById(R.id.dvd_detail_release_dates_layout))
+                        .addView(theater);
+            }
 
             // Should move down the list of poster sizes if the largest doesn't
             // load

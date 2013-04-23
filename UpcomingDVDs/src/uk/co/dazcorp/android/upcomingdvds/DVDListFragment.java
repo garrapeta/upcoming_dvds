@@ -117,7 +117,7 @@ public class DVDListFragment extends ListFragment {
             processResult(movies);
         }
         if (System.currentTimeMillis() > savedAt + HOUR) {
-            DVDListActivity.refreshData(getActivity());
+            ((DVDListActivity) getActivity()).refreshData(getActivity());
         }
 
     }
@@ -254,6 +254,7 @@ public class DVDListFragment extends ListFragment {
         JSONArray movies;
         if (upcoming != null) {
             try {
+                mAdapter.clear();
                 movies = upcoming.getJSONArray(ApiDetails.Upcoming.TAG_MOVIES);
                 for (int i = 0; i < movies.length(); i++) {
                     mAdapter.add(movies.getJSONObject(i));

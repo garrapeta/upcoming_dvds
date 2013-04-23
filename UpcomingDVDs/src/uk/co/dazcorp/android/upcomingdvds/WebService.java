@@ -18,10 +18,12 @@ import java.util.Locale;
 
 public class WebService extends IntentService {
     private static final boolean LOGURI = true;
+    public static final String PACKAGE = "uk.co.dazcorp.android.upcomingdvds";
     public static final String TAG = "WebService";
     public static final String ERROR_MSG = "error";
     public static final String RESULT = "result";
-    public static final String ACTION_RESP = "uk.co.dazcorp.android.upcomingdvds.SERVICE_COMPLETE";
+    public static final String ACTION_RESP = PACKAGE + ".SERVICE_COMPLETE";
+    public static final String API = PACKAGE + ".API";
     private AndroidHttpClient mClient;
 
     public WebService() {
@@ -32,9 +34,8 @@ public class WebService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         // Not much to do here yet as we only handle one intent
-        // UrlGenerator gen = new UrlGenerator(UrlGenerator.UPCOMING_DVD_API,
-        // true);
-        UrlGenerator gen = new UrlGenerator(UrlGenerator.UPCOMING_MOVIES_API, true);
+        String api = intent.getStringExtra(API);
+        UrlGenerator gen = new UrlGenerator(api, true);
         String locale = Locale.getDefault().getCountry();
         if (locale.equals("GB")) {
             locale = "uk";

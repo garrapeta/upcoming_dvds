@@ -10,6 +10,8 @@ import com.novoda.imageloader.core.LoaderSettings.SettingsBuilder;
 public class DVDApplication extends Application {
 
     private static ImageManager imageManager;
+    public static final int VIEW_MOVIES = 0;
+    public static final int VIEW_DVD = 1;
 
     public DVDApplication() {
     }
