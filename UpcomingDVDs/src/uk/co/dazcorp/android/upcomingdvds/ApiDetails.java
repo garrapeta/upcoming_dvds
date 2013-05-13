@@ -88,6 +88,7 @@ public class ApiDetails {
                     mSynopsis = jsonObject.getString(TAG_SYNOPSIS);
                     mReleaseDates = new ReleaseDates(jsonObject.getJSONObject(TAG_RELEASE_DATES));
                     mPosters = new Posters(jsonObject.getJSONObject(TAG_POSTERS));
+                    mLinks = new Links(jsonObject.getJSONObject(TAG_LINKS));
                     // TODO: The other parts of the Movie object
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
@@ -108,7 +109,7 @@ public class ApiDetails {
             public Posters mPosters;
             public Cast mCast[];
             public AlternateIds mAltIds[];
-            public Links mLinks[];
+            public Links mLinks;
 
             public static final class ReleaseDates {
                 public ReleaseDates(JSONObject jsonObject) throws JSONException {
@@ -138,6 +139,7 @@ public class ApiDetails {
                     mDetailed = jsonObject.optString("detailed");
                     mOriginal = jsonObject.optString("original");
                 }
+
                 public String mThumbnail;
                 public String mProfile;
                 public String mDetailed;
@@ -154,6 +156,15 @@ public class ApiDetails {
             }
 
             public static final class Links {
+
+                public Links(JSONObject jsonObject) {
+                    mSelf = jsonObject.optString("self");
+                    mAlternate = jsonObject.optString("alternate");
+                    mCast = jsonObject.optString("cast");
+                    mReviews = jsonObject.optString("reviews");
+                    mSimilar = jsonObject.optString("similar");
+                }
+
                 public String mSelf;
                 public String mAlternate;
                 public String mCast;

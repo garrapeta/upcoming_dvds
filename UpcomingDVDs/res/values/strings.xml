@@ -10,5 +10,8 @@
     <string name="movie_poster">Movie Poster</string>
     <string name="release_dates_">Release dates:</string>
     <string name="synopsis_">Synopsis:</string>
+    <string name="share_">Share&#8230;</string>
+    <string name="share">Share</string>
+    <string name="via_upcoming">Via Upcoming</string>
 
 </resources>

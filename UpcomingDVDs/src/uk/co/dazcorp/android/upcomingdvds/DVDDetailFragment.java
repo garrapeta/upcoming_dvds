@@ -1,13 +1,18 @@
 
 package uk.co.dazcorp.android.upcomingdvds;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
 import com.novoda.imageloader.core.model.ImageTag;
@@ -36,6 +41,8 @@ public class DVDDetailFragment extends Fragment {
     private Movies mMovie;
     private ImageTagFactory imageTagFactory;
 
+    private ShareActionProvider mShareActionProvider;
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -46,6 +53,7 @@ public class DVDDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
         if (getArguments().containsKey(ARG_ITEM_ID)) {
             try {
@@ -54,7 +62,27 @@ public class DVDDetailFragment extends Fragment {
                 e.printStackTrace();
             }
             imageTagFactory = new ImageTagFactory(this.getActivity(), R.drawable.ic_launcher);
+            imageTagFactory.setSaveThumbnail(true);
             imageTagFactory.setErrorImageId(R.drawable.ic_launcher);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setShareIntent();
+    }
+
+    // Call to update the share intent
+    private void setShareIntent() {
+        if (mShareActionProvider != null) {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("*/*");
+            shareIntent.putExtra(Intent.EXTRA_TEXT,
+                    mMovie.mTitle + " - " + mMovie.mYear + " " + mMovie.mLinks.mAlternate + " "
+                            + getResources().getString(R.string.via_upcoming));
+
+            mShareActionProvider.setShareIntent(shareIntent);
         }
     }
 
@@ -90,5 +118,16 @@ public class DVDDetailFragment extends Fragment {
 
         }
         return rootView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Inflate menu resource file.
+        inflater.inflate(R.menu.details_menu, menu);
+        // Locate MenuItem with ShareActionProvider
+        MenuItem item = menu.findItem(R.id.menu_item_share);
+        // Fetch and store ShareActionProvider
+        mShareActionProvider = (ShareActionProvider) item.getActionProvider();
+        setShareIntent();
     }
 }
