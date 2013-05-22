@@ -8,3 +8,4 @@
     android:layout_marginRight="16dp"
     tools:context=".DVDListActivity"
     tools:layout="@layout/fragment_dvd_list" />
+

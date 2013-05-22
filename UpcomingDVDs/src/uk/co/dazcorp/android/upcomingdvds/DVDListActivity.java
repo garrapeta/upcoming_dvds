@@ -31,27 +31,17 @@ import org.json.JSONObject;
 public class DVDListActivity extends FragmentActivity implements DVDListFragment.Callbacks,
         OnNavigationListener {
 
+    public static void refreshData(Context context, int api) {
+        Intent msgIntent = new Intent(context, WebService.class);
+        if (api == DVDApplication.VIEW_DVD)
+            msgIntent.putExtra(WebService.API, UrlGenerator.UPCOMING_DVD_API);
+        if (api == DVDApplication.VIEW_MOVIES)
+            msgIntent.putExtra(WebService.API, UrlGenerator.UPCOMING_MOVIES_API);
+        context.startService(msgIntent);
+    }
+
     // The type of content we are currently looking at
     public int CURRENT_VIEW = 0;
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int featureId = item.getItemId();
-        switch (featureId) {
-            case (R.id.list_refresh):
-                refreshData(this, CURRENT_VIEW);
-                return true;
-            default:
-                return super.onMenuItemSelected(featureId, item);
-        }
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        this.getMenuInflater().inflate(R.menu.list_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -60,29 +50,9 @@ public class DVDListActivity extends FragmentActivity implements DVDListFragment
     private boolean mTwoPane;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dvd_list);
-
-        if (findViewById(R.id.dvd_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-large and
-            // res/values-sw600dp). If this view is present, then the
-            // activity should be in two-pane mode.
-            mTwoPane = true;
-
-            // In two-pane mode, list items should be given the
-            // 'activated' state when touched.
-            ((DVDListFragment) getSupportFragmentManager().findFragmentById(R.id.dvd_list))
-                    .setActivateOnItemClick(true);
-        }
-        Context context = this.getActionBar().getThemedContext();
-        ArrayAdapter<CharSequence> list = ArrayAdapter.createFromResource(context, R.array.menu,
-                android.R.layout.simple_list_item_1);
-        list.setDropDownViewResource(android.R.layout.simple_list_item_1);
-        getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        getActionBar().setListNavigationCallbacks(list, this);
-
+    public boolean onCreateOptionsMenu(Menu menu) {
+        this.getMenuInflater().inflate(R.menu.list_menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     /**
@@ -111,20 +81,6 @@ public class DVDListActivity extends FragmentActivity implements DVDListFragment
         }
     }
 
-    public static void refreshData(Context context, int api) {
-        Intent msgIntent = new Intent(context, WebService.class);
-        if (api == DVDApplication.VIEW_DVD)
-            msgIntent.putExtra(WebService.API, UrlGenerator.UPCOMING_DVD_API);
-        if (api == DVDApplication.VIEW_MOVIES)
-            msgIntent.putExtra(WebService.API, UrlGenerator.UPCOMING_MOVIES_API);
-        context.startService(msgIntent);
-    }
-
-    public void refreshData(Context context) {
-        refreshData(context, CURRENT_VIEW);
-
-    }
-
     @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
         if (CURRENT_VIEW != itemPosition) {
@@ -135,5 +91,48 @@ public class DVDListActivity extends FragmentActivity implements DVDListFragment
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int featureId = item.getItemId();
+        switch (featureId) {
+            case (R.id.list_refresh):
+                refreshData(this, CURRENT_VIEW);
+                return true;
+            default:
+                return super.onMenuItemSelected(featureId, item);
+        }
+
+    }
+
+    public void refreshData(Context context) {
+        refreshData(context, CURRENT_VIEW);
+
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_dvd_list);
+
+        if (findViewById(R.id.dvd_detail_container) != null) {
+            // The detail container view will be present only in the
+            // large-screen layouts (res/values-large and
+            // res/values-sw600dp). If this view is present, then the
+            // activity should be in two-pane mode.
+            mTwoPane = true;
+
+            // In two-pane mode, list items should be given the
+            // 'activated' state when touched.
+            ((DVDListFragment) getSupportFragmentManager().findFragmentById(R.id.dvd_list))
+                    .setActivateOnItemClick(true);
+        }
+        Context context = this.getActionBar().getThemedContext();
+        ArrayAdapter<CharSequence> list = ArrayAdapter.createFromResource(context, R.array.menu,
+                android.R.layout.simple_list_item_1);
+        list.setDropDownViewResource(android.R.layout.simple_list_item_1);
+        getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        getActionBar().setListNavigationCallbacks(list, this);
+
+    }
 
 }

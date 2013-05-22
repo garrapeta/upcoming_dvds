@@ -12,6 +12,8 @@ import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -33,25 +35,6 @@ import java.util.ArrayList;
 public class DVDListFragment extends ListFragment {
 
     /**
-     * The serialization (saved instance state) Bundle key representing the
-     * activated item position. Only used on tablets.
-     */
-    private static final String STATE_ACTIVATED_POSITION = "activated_position";
-
-    private static final String MOVIES_DATA = "movies_data";
-
-    /**
-     * The fragment's current callback object, which is notified of list item
-     * clicks.
-     */
-    private Callbacks mCallbacks = sDummyCallbacks;
-
-    /**
-     * The current activated item position. Only used on tablets.
-     */
-    private int mActivatedPosition = ListView.INVALID_POSITION;
-
-    /**
      * A callback interface that all activities containing this fragment must
      * implement. This mechanism allows activities to be notified of item
      * selections.
@@ -63,6 +46,40 @@ public class DVDListFragment extends ListFragment {
         public void onItemSelected(JSONObject item);
     }
 
+    public class ResponseReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // mProgress.setVisibility(View.GONE);
+            // TODO: fancy spinning refresh in actionbar?
+            // ActionView for the refreash
+
+            String result = intent.getExtras().getString(WebService.RESULT);
+            JSONObject upcoming = null;
+            try {
+                upcoming = new JSONObject(result);
+                // Save some data
+                // TODO: save movie/dvd results seperatly
+                SharedPreferences.Editor ed = mPrefs.edit();
+                ed.putString(MOVIES_DATA, result);
+                ed.putLong(MOVIES_TIME, System.currentTimeMillis());
+                ed.commit();
+
+            } catch (JSONException e) {
+                Toast.makeText(getActivity(), "Parsing the feed went wrong!", Toast.LENGTH_LONG)
+                        .show();
+                e.printStackTrace();
+            }
+            processResult(upcoming);
+
+        }
+    }
+
+    private static final Long HOUR = (long) 3600000;
+
+    private static final String MOVIES_DATA = "movies_data";
+
+    private static final String PREFS = "dvdlistprefs";
+
     /**
      * A dummy implementation of the {@link Callbacks} interface that does
      * nothing. Used only when this fragment is not attached to an activity.
@@ -73,23 +90,47 @@ public class DVDListFragment extends ListFragment {
         }
     };
 
+    /**
+     * The serialization (saved instance state) Bundle key representing the
+     * activated item position. Only used on tablets.
+     */
+    private static final String STATE_ACTIVATED_POSITION = "activated_position";
+    /**
+     * The current activated item position. Only used on tablets.
+     */
+    private int mActivatedPosition = ListView.INVALID_POSITION;
     private JSONArrayAdapter mAdapter;
-    private ResponseReceiver mReceiver;
+
+    /**
+     * The fragment's current callback object, which is notified of list item
+     * clicks.
+     */
+    private Callbacks mCallbacks = sDummyCallbacks;
+
     private final ArrayList<JSONObject> mMovies = new ArrayList<JSONObject>();
+    private final String MOVIES_TIME = "movies_timestamp";
 
     private SharedPreferences mPrefs;
 
-    private final String MOVIES_TIME = "movies_timestamp";
-    private static final String PREFS = "dvdlistprefs";
-
-    private static final Long HOUR = (long) 3600000;
-
+    private ResponseReceiver mReceiver;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
     public DVDListFragment() {
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        // Activities containing this fragment must implement its callbacks.
+        if (!(activity instanceof Callbacks)) {
+            throw new IllegalStateException("Activity must implement fragment's callbacks.");
+        }
+
+        mCallbacks = (Callbacks) activity;
     }
 
     @Override
@@ -100,7 +141,7 @@ public class DVDListFragment extends ListFragment {
         mAdapter = new JSONArrayAdapter(this.getActivity(), R.layout.row_dvd_list, mMovies,
                 new String[] {
                         ApiDetails.Upcoming.Movies.TAG_TITLE, ApiDetails.Upcoming.Movies.TAG_YEAR,
-                        ApiDetails.Upcoming.Movies.Posters.TAG_THUMBNAIL,
+                        ApiDetails.Upcoming.Movies.Posters.TAG_PROFILE,
                         ApiDetails.Upcoming.Movies.ReleaseDates.TAG_DVDDATE
 
                 }, new int[] {
@@ -122,42 +163,10 @@ public class DVDListFragment extends ListFragment {
 
     }
 
-    private void processResult(String movies) {
-        try {
-            processResult(new JSONObject(movies));
-        } catch (JSONException e) {
-            Toast.makeText(getActivity(), "Parsing the feed went wrong!", Toast.LENGTH_LONG).show();
-            e.printStackTrace();
-        }
-
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         return inflater.inflate(R.layout.fragment_dvd_list, null);
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        // Restore the previously serialized activated item position.
-        if (savedInstanceState != null && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
-            setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
-        }
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        // Activities containing this fragment must implement its callbacks.
-        if (!(activity instanceof Callbacks)) {
-            throw new IllegalStateException("Activity must implement fragment's callbacks.");
-        }
-
-        mCallbacks = (Callbacks) activity;
     }
 
     @Override
@@ -178,35 +187,10 @@ public class DVDListFragment extends ListFragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (mActivatedPosition != ListView.INVALID_POSITION) {
-            // Serialize and persist the activated item position.
-            outState.putInt(STATE_ACTIVATED_POSITION, mActivatedPosition);
-        }
-        // TODO: Save the list of movies here so we don't refetch on orientation
-        // change
-    }
+    public void onPause() {
+        super.onPause();
 
-    /**
-     * Turns on activate-on-click mode. When this mode is on, list items will be
-     * given the 'activated' state when touched.
-     */
-    public void setActivateOnItemClick(boolean activateOnItemClick) {
-        // When setting CHOICE_MODE_SINGLE, ListView will automatically
-        // give items the 'activated' state when touched.
-        getListView().setChoiceMode(
-                activateOnItemClick ? ListView.CHOICE_MODE_SINGLE : ListView.CHOICE_MODE_NONE);
-    }
-
-    private void setActivatedPosition(int position) {
-        if (position == ListView.INVALID_POSITION) {
-            getListView().setItemChecked(mActivatedPosition, false);
-        } else {
-            getListView().setItemChecked(position, true);
-        }
-
-        mActivatedPosition = position;
+        this.getActivity().unregisterReceiver(mReceiver);
     }
 
     @Override
@@ -218,35 +202,23 @@ public class DVDListFragment extends ListFragment {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-
-        this.getActivity().unregisterReceiver(mReceiver);
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (mActivatedPosition != AdapterView.INVALID_POSITION) {
+            // Serialize and persist the activated item position.
+            outState.putInt(STATE_ACTIVATED_POSITION, mActivatedPosition);
+        }
+        // TODO: Save the list of movies here so we don't refetch on orientation
+        // change
     }
 
-    public class ResponseReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            // mProgress.setVisibility(View.GONE);
-            // TODO: fancy spinning refresh in actionbar?
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-            String result = intent.getExtras().getString(WebService.RESULT);
-            JSONObject upcoming = null;
-            try {
-                upcoming = new JSONObject(result);
-                // Save some data
-                SharedPreferences.Editor ed = mPrefs.edit();
-                ed.putString(MOVIES_DATA, result);
-                ed.putLong(MOVIES_TIME, System.currentTimeMillis());
-                ed.commit();
-
-            } catch (JSONException e) {
-                Toast.makeText(getActivity(), "Parsing the feed went wrong!", Toast.LENGTH_LONG)
-                        .show();
-                e.printStackTrace();
-            }
-            processResult(upcoming);
-
+        // Restore the previously serialized activated item position.
+        if (savedInstanceState != null && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
+            setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
         }
     }
 
@@ -268,5 +240,36 @@ public class DVDListFragment extends ListFragment {
             }
 
         }
+    }
+
+    /**
+     * Turns on activate-on-click mode. When this mode is on, list items will be
+     * given the 'activated' state when touched.
+     */
+    public void setActivateOnItemClick(boolean activateOnItemClick) {
+        // When setting CHOICE_MODE_SINGLE, ListView will automatically
+        // give items the 'activated' state when touched.
+        getListView().setChoiceMode(
+                activateOnItemClick ? AbsListView.CHOICE_MODE_SINGLE : AbsListView.CHOICE_MODE_NONE);
+    }
+
+    private void processResult(String movies) {
+        try {
+            processResult(new JSONObject(movies));
+        } catch (JSONException e) {
+            Toast.makeText(getActivity(), "Parsing the feed went wrong!", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+
+    }
+
+    private void setActivatedPosition(int position) {
+        if (position == AdapterView.INVALID_POSITION) {
+            getListView().setItemChecked(mActivatedPosition, false);
+        } else {
+            getListView().setItemChecked(position, true);
+        }
+
+        mActivatedPosition = position;
     }
 }

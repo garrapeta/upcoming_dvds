@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+>
 
     <TextView
         android:id="@+id/dvd_detail_title"
@@ -8,6 +10,13 @@
         android:layout_height="wrap_content"
         android:text="@string/monsters_inc_"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp" />
 
     <TextView
         android:id="@+id/dvd_detail_year"
@@ -28,6 +37,13 @@
         android:layout_height="wrap_content"
         android:text="@string/_135" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp" />
+
     <TextView
         android:id="@+id/dvd_detail_release_dates_text"
         android:layout_width="match_parent"
@@ -39,9 +55,15 @@
         android:id="@+id/dvd_detail_release_dates_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+    >
     </LinearLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp" />
     <TextView
         android:id="@+id/dvd_detail_synopsis_text"
         android:layout_width="match_parent"
