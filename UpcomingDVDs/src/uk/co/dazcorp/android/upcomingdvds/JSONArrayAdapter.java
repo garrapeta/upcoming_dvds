@@ -18,40 +18,29 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class JSONArrayAdapter extends ArrayAdapter<JSONObject> {
-    private final int mResource;
+    private final ImageTagFactory imageTagFactory;
     private final LayoutInflater mInflater;
+    private final int mResource;
     protected String[] mFrom;
     protected int[] mTo;
-    private final ImageTagFactory imageTagFactory;
+    private final Context mContext;
 
     public JSONArrayAdapter(Context context, int textViewResourceId, ArrayList<JSONObject> objects,
             String[] from, int[] to) {
         super(context, textViewResourceId, 0, objects);
+        mContext = context;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mResource = textViewResourceId;
         mFrom = from;
         mTo = to;
 
-        imageTagFactory = new ImageTagFactory(this.getContext(), R.drawable.ic_launcher);
+        imageTagFactory = ImageTagFactory.newInstance(this.getContext(), R.drawable.ic_launcher);
+        imageTagFactory.setAnimation(R.anim.fade_in);
         imageTagFactory.setErrorImageId(R.drawable.ic_launcher);
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View view;
-        if (convertView == null) {
-            view = mInflater.inflate(mResource, parent, false);
-        } else {
-            view = convertView;
-        }
-        JSONObject item = getItem(position);
-        bindView(view, item);
-
-        return view;
-    }
-
     /**
-     * a la bindView of {@link CursorAdapter} TODO allow for more complex
+     * like bindView of {@link CursorAdapter} TODO allow for more complex
      * bindings
      */
     public void bindView(View view, JSONObject json) {
@@ -106,10 +95,24 @@ public class JSONArrayAdapter extends ArrayAdapter<JSONObject> {
 
     }
 
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View view;
+        if (convertView == null) {
+            view = mInflater.inflate(mResource, parent, false);
+        } else {
+            view = convertView;
+        }
+        JSONObject item = getItem(position);
+        bindView(view, item);
+
+        return view;
+    }
+
     public void setViewImage(ImageView v, String value) {
 
         // Build image tag with remote image URL
-        ImageTag tag = imageTagFactory.build(value);
+        ImageTag tag = imageTagFactory.build(value, mContext);
         v.setTag(tag);
         DVDApplication.getImageManager().getLoader().load(v);
 

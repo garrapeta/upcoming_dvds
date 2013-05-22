@@ -17,49 +17,18 @@ import java.net.URISyntaxException;
 import java.util.Locale;
 
 public class WebService extends IntentService {
-    private static final boolean LOGURI = true;
     public static final String PACKAGE = "uk.co.dazcorp.android.upcomingdvds";
-    public static final String TAG = "WebService";
-    public static final String ERROR_MSG = "error";
-    public static final String RESULT = "result";
     public static final String ACTION_RESP = PACKAGE + ".SERVICE_COMPLETE";
     public static final String API = PACKAGE + ".API";
+    public static final String ERROR_MSG = "error";
+    public static final String RESULT = "result";
+    public static final String TAG = "WebService";
+    private static final boolean LOGURI = true;
     private AndroidHttpClient mClient;
 
     public WebService() {
         super("IntentService");
         mClient = AndroidHttpClient.newInstance(null);
-    }
-
-    @Override
-    protected void onHandleIntent(Intent intent) {
-        // Not much to do here yet as we only handle one intent
-        String api = intent.getStringExtra(API);
-        UrlGenerator gen = new UrlGenerator(api, true);
-        String locale = Locale.getDefault().getCountry();
-        if (locale.equals("GB")) {
-            locale = "uk";
-        }
-        gen.addValue(ApiDetails.Upcoming.COUNTRY, locale);
-        gen.addValue(ApiDetails.Upcoming.PAGE_LIMIT, Integer.toString(16));
-        String result = doRequest(getURIfromString(gen.getCurrentURL()));
-        result = result.trim();
-        Intent broadcastIntent = new Intent();
-        broadcastIntent.setAction(ACTION_RESP);
-        broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
-        broadcastIntent.putExtra(RESULT, result);
-        sendBroadcast(broadcastIntent);
-
-    }
-
-    private URI getURIfromString(String url) {
-        URI uri = null;
-        try {
-            uri = new URI(url);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-        return uri;
     }
 
     private String doRequest(URI uri) {
@@ -99,5 +68,36 @@ public class WebService extends IntentService {
             mClient.close();
         }
         return result;
+    }
+
+    private URI getURIfromString(String url) {
+        URI uri = null;
+        try {
+            uri = new URI(url);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        return uri;
+    }
+
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        // Not much to do here yet as we only handle one intent
+        String api = intent.getStringExtra(API);
+        UrlGenerator gen = new UrlGenerator(api, true);
+        String locale = Locale.getDefault().getCountry();
+        if (locale.equals("GB")) {
+            locale = "uk";
+        }
+        gen.addValue(ApiDetails.Upcoming.COUNTRY, locale);
+        gen.addValue(ApiDetails.Upcoming.PAGE_LIMIT, Integer.toString(16));
+        String result = doRequest(getURIfromString(gen.getCurrentURL()));
+        result = result.trim();
+        Intent broadcastIntent = new Intent();
+        broadcastIntent.setAction(ACTION_RESP);
+        broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
+        broadcastIntent.putExtra(RESULT, result);
+        sendBroadcast(broadcastIntent);
+
     }
 }
