@@ -132,6 +132,7 @@ public class ApiDetails {
 
             public static final class Posters {
                 public static final String TAG_THUMBNAIL = "posters.thumbnail";
+                public static final String TAG_PROFILE = "posters.profile";
 
                 public Posters(JSONObject jsonObject) {
                     mThumbnail = jsonObject.optString("thumbnail");
