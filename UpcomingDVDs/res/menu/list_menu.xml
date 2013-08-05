@@ -3,10 +3,8 @@
 
     <item
         android:id="@+id/list_refresh"
-        android:icon="@drawable/ic_action_reload"
-        android:showAsAction="ifRoom"
-        android:title="@string/refresh"
-        android:visible="true">
-    </item>
+        android:actionViewClass="com.manuelpeinado.refreshactionitem.RefreshActionItem"
+        android:showAsAction="always"
+        android:title="@string/refresh"/>
 
 </menu>

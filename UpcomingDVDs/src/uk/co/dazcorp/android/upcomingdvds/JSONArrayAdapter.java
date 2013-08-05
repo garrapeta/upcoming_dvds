@@ -34,7 +34,7 @@ public class JSONArrayAdapter extends ArrayAdapter<JSONObject> {
         mFrom = from;
         mTo = to;
 
-        imageTagFactory = ImageTagFactory.newInstance(this.getContext(), R.drawable.ic_launcher);
+        imageTagFactory = ImageTagFactory.newInstance(this.getContext(), R.drawable.ic_action_reload);
         imageTagFactory.setAnimation(R.anim.fade_in);
         imageTagFactory.setErrorImageId(R.drawable.ic_launcher);
     }

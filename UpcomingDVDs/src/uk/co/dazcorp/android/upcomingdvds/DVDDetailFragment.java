@@ -62,7 +62,7 @@ public class DVDDetailFragment extends Fragment {
                 e.printStackTrace();
             }
             imageTagFactory = ImageTagFactory.newInstance(this.getActivity(),
-                    R.drawable.ic_launcher);
+            		R.drawable.ic_action_reload);
             imageTagFactory.setSaveThumbnail(true);
             imageTagFactory.setAnimation(R.anim.fade_in);
             imageTagFactory.setErrorImageId(R.drawable.ic_launcher);
