@@ -1,6 +1,7 @@
 
 package uk.co.dazcorp.android.upcomingdvds;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -122,7 +123,7 @@ public class DVDDetailFragment extends Fragment {
 
     // Call to update the share intent
     private void setShareIntent() {
-        if (mShareActionProvider != null) {
+        if (mShareActionProvider != null && mMovie != null) {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("*/*");
             shareIntent.putExtra(Intent.EXTRA_TEXT,

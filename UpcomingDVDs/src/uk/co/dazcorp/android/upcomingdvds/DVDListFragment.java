@@ -56,10 +56,15 @@ public class DVDListFragment extends ListFragment implements
 		public void onItemSelected(JSONObject item);
 	}
 
+	public static final String ERROR = "error";
+
 	public class ResponseReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			String result = intent.getExtras().getString(WebService.RESULT);
+			if (result.equals(ERROR)) {
+				return;
+			}
 			JSONObject upcoming = null;
 			try {
 				upcoming = new JSONObject(result);
@@ -75,7 +80,10 @@ public class DVDListFragment extends ListFragment implements
 						Toast.LENGTH_LONG).show();
 				e.printStackTrace();
 			}
-			processResult(upcoming);
+			if (upcoming != null) {
+				processResult(upcoming);
+			}
+
 			mRefreshActionItem.showProgress(false);
 
 		}
