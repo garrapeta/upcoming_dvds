@@ -1,6 +1,7 @@
 
 package uk.co.dazcorp.android.upcomingdvds;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -35,11 +36,11 @@ public class DVDDetailFragment extends Fragment {
      */
     public static final String ARG_ITEM_ID = "item_id";
 
+    private ImageTagFactory imageTagFactory;
     /**
      * The content this fragment is presenting.
      */
     private Movies mMovie;
-    private ImageTagFactory imageTagFactory;
 
     private ShareActionProvider mShareActionProvider;
 
@@ -61,29 +62,23 @@ public class DVDDetailFragment extends Fragment {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            imageTagFactory = new ImageTagFactory(this.getActivity(), R.drawable.ic_launcher);
+            imageTagFactory = ImageTagFactory.newInstance(this.getActivity(),
+            		R.drawable.ic_action_reload);
             imageTagFactory.setSaveThumbnail(true);
+            imageTagFactory.setAnimation(R.anim.fade_in);
             imageTagFactory.setErrorImageId(R.drawable.ic_launcher);
         }
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Inflate menu resource file.
+        inflater.inflate(R.menu.details_menu, menu);
+        // Locate MenuItem with ShareActionProvider
+        MenuItem item = menu.findItem(R.id.menu_item_share);
+        // Fetch and store ShareActionProvider
+        mShareActionProvider = (ShareActionProvider) item.getActionProvider();
         setShareIntent();
-    }
-
-    // Call to update the share intent
-    private void setShareIntent() {
-        if (mShareActionProvider != null) {
-            Intent shareIntent = new Intent(Intent.ACTION_SEND);
-            shareIntent.setType("*/*");
-            shareIntent.putExtra(Intent.EXTRA_TEXT,
-                    mMovie.mTitle + " - " + mMovie.mYear + " " + mMovie.mLinks.mAlternate + " "
-                            + getResources().getString(R.string.via_upcoming));
-
-            mShareActionProvider.setShareIntent(shareIntent);
-        }
     }
 
     @Override
@@ -112,7 +107,7 @@ public class DVDDetailFragment extends Fragment {
             // Should move down the list of poster sizes if the largest doesn't
             // load
             ImageView v = (ImageView) rootView.findViewById(R.id.dvd_detail_poster);
-            ImageTag tag = imageTagFactory.build(mMovie.mPosters.mOriginal);
+            ImageTag tag = imageTagFactory.build(mMovie.mPosters.mOriginal, getActivity());
             v.setTag(tag);
             DVDApplication.getImageManager().getLoader().load(v);
 
@@ -121,13 +116,21 @@ public class DVDDetailFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // Inflate menu resource file.
-        inflater.inflate(R.menu.details_menu, menu);
-        // Locate MenuItem with ShareActionProvider
-        MenuItem item = menu.findItem(R.id.menu_item_share);
-        // Fetch and store ShareActionProvider
-        mShareActionProvider = (ShareActionProvider) item.getActionProvider();
+    public void onResume() {
+        super.onResume();
         setShareIntent();
+    }
+
+    // Call to update the share intent
+    private void setShareIntent() {
+        if (mShareActionProvider != null && mMovie != null) {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("*/*");
+            shareIntent.putExtra(Intent.EXTRA_TEXT,
+                    mMovie.mTitle + " - " + mMovie.mYear + " " + mMovie.mLinks.mAlternate + " "
+                            + getResources().getString(R.string.via_upcoming));
+
+            mShareActionProvider.setShareIntent(shareIntent);
+        }
     }
 }

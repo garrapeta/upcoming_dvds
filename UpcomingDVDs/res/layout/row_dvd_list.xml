@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/card"
     android:orientation="horizontal" >
 
     <ImageView
@@ -9,11 +10,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:maxHeight="80dp"
-        android:maxWidth="40dp"
+        android:contentDescription="@string/movie_poster"
         android:padding="8dp"
         android:scaleType="fitXY"
-        android:src="@drawable/ic_launcher" android:contentDescription="@string/movie_poster"/>
+        android:src="@drawable/ic_launcher" />
 
     <LinearLayout
         android:id="@+id/inner"
@@ -26,14 +26,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/title"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@android:color/primary_text_light" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp" />
 
         <TextView
             android:id="@+id/list_item_year"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/year"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/secondary_text_light" />
 
         <LinearLayout
             android:id="@+id/release"
@@ -46,14 +55,17 @@
                 android:layout_height="wrap_content"
                 android:paddingRight="5dp"
                 android:text="@string/release_type"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@android:color/tertiary_text_light" />
 
             <TextView
                 android:id="@+id/list_item_release_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/release_date"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@android:color/tertiary_text_light" />
+
         </LinearLayout>
     </LinearLayout>
 

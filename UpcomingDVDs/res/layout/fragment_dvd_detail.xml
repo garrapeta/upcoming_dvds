@@ -10,9 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingTop="8dp"
+        android:padding="8dp"
         tools:context=".DVDDetailFragment" >
 
         <ImageView
@@ -23,10 +21,23 @@
             android:contentDescription="@string/movie_poster"
             android:maxHeight="1280dp"
             android:maxWidth="720dp"
+            android:paddingBottom="16dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
             android:scaleType="fitCenter" />
 
-        <include layout="@layout/dvd_detail_text_content"  android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-        
+        <LinearLayout
+            android:id="@+id/dvd_detail_text_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/card"
+            android:orientation="vertical" >
+
+            <include
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                layout="@layout/dvd_detail_text_content" />
+        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>
