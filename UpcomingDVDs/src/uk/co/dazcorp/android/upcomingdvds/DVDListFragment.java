@@ -69,7 +69,7 @@ public class DVDListFragment extends ListFragment implements
 			try {
 				upcoming = new JSONObject(result);
 				// Save some data
-				// TODO: save movie/dvd results seperatly
+				// TODO: save movie/dvd results separately
 				SharedPreferences.Editor ed = mPrefs.edit();
 				ed.putString(MOVIES_DATA, result);
 				ed.putLong(MOVIES_TIME, System.currentTimeMillis());

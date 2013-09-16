@@ -1,8 +1,6 @@
 
 package uk.co.dazcorp.android.upcomingdvds;
 
-import android.util.Log;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
@@ -28,7 +26,7 @@ class UrlGenerator {
             return false;
         }
 
-        Log.d(TAG, "URL - value type: " + value_type);
+     //   Log.d(TAG, "URL - value type: " + value_type);
         value = value.trim();
 
         try {

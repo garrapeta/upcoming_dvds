@@ -29,11 +29,6 @@ public class DVDDetailActivity extends FragmentActivity {
 			//
 			NavUtils.navigateUpTo(this, new Intent(this, DVDListActivity.class));
 			return true;
-
-		case R.id.about_menu:
-			// Launch the about screen
-			this.startActivity(new Intent(this, AboutActivity.class));
-			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
