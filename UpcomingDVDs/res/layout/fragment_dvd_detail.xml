@@ -24,7 +24,8 @@
             android:paddingBottom="16dp"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-            android:scaleType="fitCenter" />
+            android:scaleType="fitCenter"
+            android:src="@drawable/unloaded_photo" />
 
         <LinearLayout
             android:id="@+id/dvd_detail_text_container"

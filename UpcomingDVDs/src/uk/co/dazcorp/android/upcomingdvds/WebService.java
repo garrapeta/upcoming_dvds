@@ -23,7 +23,7 @@ public class WebService extends IntentService {
     public static final String ERROR_MSG = "error";
     public static final String RESULT = "result";
     public static final String TAG = "WebService";
-    private static final boolean LOGURI = true;
+    private static final boolean LOGURI = false;
     private AndroidHttpClient mClient;
 
     public WebService() {
@@ -87,6 +87,7 @@ public class WebService extends IntentService {
         UrlGenerator gen = new UrlGenerator(api, true);
         String locale = Locale.getDefault().getCountry();
         if (locale.equals("GB")) {
+        	// API doesn't work with GB
             locale = "uk";
         }
         gen.addValue(ApiDetails.Upcoming.COUNTRY, locale);

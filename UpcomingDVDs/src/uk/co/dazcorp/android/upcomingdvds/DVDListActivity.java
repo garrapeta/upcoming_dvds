@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.NavUtils;
+import android.view.MenuItem;
+
 import org.json.JSONObject;
 
 /**
@@ -85,5 +88,16 @@ public class DVDListActivity extends FragmentActivity implements
 					R.id.dvd_list)).setActivateOnItemClick(true);
 		}
 
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.about_menu:
+			// Launch the about screen
+			this.startActivity(new Intent(this, AboutActivity.class));
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 }
