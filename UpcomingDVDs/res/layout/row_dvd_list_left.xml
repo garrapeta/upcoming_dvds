@@ -3,22 +3,24 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/card"
+    android:gravity="center"
     android:orientation="horizontal" >
 
     <ImageView
         android:id="@+id/list_item_thumbnail"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
+        android:layout_weight="0.25"
         android:contentDescription="@string/movie_poster"
         android:padding="8dp"
-        android:scaleType="fitXY"
+        android:scaleType="center"
         android:src="@drawable/ic_launcher" />
 
     <LinearLayout
         android:id="@+id/inner"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="0.75"
         android:orientation="vertical" >
 
         <TextView
@@ -45,27 +47,49 @@
             android:textColor="@android:color/secondary_text_light" />
 
         <LinearLayout
-            android:id="@+id/release"
+            android:id="@+id/movie_release"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
 
             <TextView
-                android:id="@+id/list_item_release_type"
+                android:id="@+id/list_item_release_type_movie"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingRight="5dp"
-                android:text="@string/release_type"
+                android:paddingRight="4dp"
+                android:text="@string/release_type_theater"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@android:color/tertiary_text_light" />
 
             <TextView
-                android:id="@+id/list_item_release_date"
+                android:id="@+id/list_item_release_date_movie"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/release_date"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@android:color/tertiary_text_light" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/dvd_release"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/list_item_release_type_dvd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="4dp"
+                android:text="@string/release_type_dvd"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@android:color/tertiary_text_light" />
 
+            <TextView
+                android:id="@+id/list_item_release_date_dvd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@android:color/tertiary_text_light" />
         </LinearLayout>
     </LinearLayout>
 

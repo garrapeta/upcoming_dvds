@@ -8,20 +8,28 @@
     android:orientation="vertical"
     tools:context=".DVDListActivity" >
 
-    <ListView
-        android:id="@id/android:list"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_container"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="4dp"
-        android:drawSelectorOnTop="true"
-        tools:listitem="@layout/row_dvd_list" />
+        android:layout_height="match_parent" >
+
+        <ListView
+            android:id="@id/android:list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="4dp"
+            android:drawSelectorOnTop="true" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <TextView
         android:id="@id/android:empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:clickable="false"
+        android:drawableTop="@drawable/ic_action_emo_cry"
         android:gravity="center"
         android:text="@string/zero_results"
         android:textAppearance="?android:attr/textAppearanceLarge" />

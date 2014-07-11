@@ -1,5 +1,5 @@
 
-package uk.co.dazcorp.android.upcomingdvds;
+package uk.co.dazcorp.android.upcomingdvds.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,6 +14,11 @@ import com.novoda.imageloader.core.model.ImageTagFactory;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import uk.co.dazcorp.android.upcomingdvds.DVDApplication;
+import uk.co.dazcorp.android.upcomingdvds.R;
+import uk.co.dazcorp.android.upcomingdvds.R.anim;
+import uk.co.dazcorp.android.upcomingdvds.R.drawable;
 
 import java.util.ArrayList;
 

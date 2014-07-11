@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
->
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" >
 
     <TextView
         android:id="@+id/dvd_detail_title"
@@ -14,9 +12,9 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
         android:layout_marginBottom="4dp"
-        android:layout_marginTop="4dp" />
+        android:layout_marginTop="4dp"
+        android:background="@android:color/darker_gray" />
 
     <TextView
         android:id="@+id/dvd_detail_year"
@@ -40,9 +38,9 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
         android:layout_marginBottom="4dp"
-        android:layout_marginTop="4dp" />
+        android:layout_marginTop="4dp"
+        android:background="@android:color/darker_gray" />
 
     <TextView
         android:id="@+id/dvd_detail_release_dates_text"
@@ -55,15 +53,36 @@
         android:id="@+id/dvd_detail_release_dates_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-    >
-    </LinearLayout>
+        android:orientation="vertical" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
         android:layout_marginBottom="4dp"
-        android:layout_marginTop="4dp" />
+        android:layout_marginTop="4dp"
+        android:background="@android:color/darker_gray" />
+
+    <TextView
+        android:id="@+id/dvd_detail_rating_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ratings_"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <LinearLayout
+        android:id="@+id/dvd_detail_rating_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center|left"
+        android:orientation="horizontal" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp"
+        android:background="@android:color/darker_gray" />
+
     <TextView
         android:id="@+id/dvd_detail_synopsis_text"
         android:layout_width="match_parent"

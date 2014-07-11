@@ -7,28 +7,25 @@ import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 
 /**
- * An activity representing a single DVD detail screen. This activity is only
- * used on handset devices. On tablet-size devices, item details are presented
- * side-by-side with a list of items in a {@link DVDListActivity}.
+ * An activity representing a single DVD detail screen. This activity is only used on handset devices. On tablet-size devices, item details are presented side-by-side with a list of items in a {@link DVDListActivity}.
  * <p>
- * This activity is mostly just a 'shell' activity containing nothing more than
- * a {@link DVDDetailFragment}.
+ * This activity is mostly just a 'shell' activity containing nothing more than a {@link DVDDetailFragment}.
  */
 public class DVDDetailActivity extends FragmentActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case android.R.id.home:
-			// This ID represents the Home or Up button. In the case of this
-			// activity, the Up button is shown. Use NavUtils to allow users
-			// to navigate up one level in the application structure. For
-			// more details, see the Navigation pattern on Android Design:
-			//
-			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-			//
-			NavUtils.navigateUpTo(this, new Intent(this, DVDListActivity.class));
-			return true;
+			case android.R.id.home:
+				// This ID represents the Home or Up button. In the case of this
+				// activity, the Up button is shown. Use NavUtils to allow users
+				// to navigate up one level in the application structure. For
+				// more details, see the Navigation pattern on Android Design:
+				//
+				// http://developer.android.com/design/patterns/navigation.html#up-vs-back
+				//
+				NavUtils.navigateUpTo(this, new Intent(this, DVDListActivity.class));
+				return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -54,12 +51,13 @@ public class DVDDetailActivity extends FragmentActivity {
 			// Create the detail fragment and add it to the activity
 			// using a fragment transaction.
 			Bundle arguments = new Bundle();
-			arguments.putString(DVDDetailFragment.ARG_ITEM_ID, getIntent()
-					.getStringExtra(DVDDetailFragment.ARG_ITEM_ID));
+			arguments.putAll(getIntent().getExtras());
+			// arguments.putSerializable(DVDDetailFragment.ARG_ITEM_ID, getIntent()
+			// .getSerializableExtra(DVDDetailFragment.ARG_ITEM_ID));
 			DVDDetailFragment fragment = new DVDDetailFragment();
 			fragment.setArguments(arguments);
-			getSupportFragmentManager().beginTransaction()
-					.add(R.id.dvd_detail_container, fragment).commit();
+			getSupportFragmentManager().beginTransaction().add(R.id.dvd_detail_container, fragment)
+					.commit();
 		}
 	}
 }
