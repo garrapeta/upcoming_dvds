@@ -1,14 +1,17 @@
 # Upcoming DVDs
 
-Upcoming DVDs Retrieves new release dvds or movies from the Rotten Tomatoes web apis:
+Upcoming DVDs Retrieves new release dvds or movies from the Rotten Tomatoes web APIs:
 
 http://developer.rottentomatoes.com/docs/read/json/v10/Upcoming_DVDs
 http://developer.rottentomatoes.com/docs/read/json/v10/Upcoming_Movies
 
+### Fetching Data
+
+I'm using [Retrofit](https://github.com/square/retrofit) by [Square](https://github.com/square/) to map the Rotten Tomatoes web REST API to a Java Interface. Behind the scenes it uses OKHTTP and GSON to convert JSON into POJOs. 
+
 ### Parsing JSON
 
-
-The application uses a simple JSONArrayAdapter to populate the initial list of results, this was primarily done as an experiment but i think it works rather well. The details screen is passed a POJO made by parsing a JSONObject from the Adapter.
+Data is parsed from JSON into POJOs using GSON.
 
 ### Libraries
 
