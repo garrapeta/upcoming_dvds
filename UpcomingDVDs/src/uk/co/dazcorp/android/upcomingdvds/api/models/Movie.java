@@ -2,9 +2,7 @@ package uk.co.dazcorp.android.upcomingdvds.api.models;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Movie implements Serializable {
 
@@ -14,7 +12,7 @@ public class Movie implements Serializable {
 	public String title;
 	public String year;
 	public String mpaaRating;
-	public int runtime;
+	public String runtime;
 	public ReleaseDates releaseDates;
 	public Ratings ratings;
 	public String synopsis;
@@ -22,6 +20,5 @@ public class Movie implements Serializable {
 	public List<AbridgedCast> abridgedCast = new ArrayList<AbridgedCast>();
 	public AlternateIds alternateIds;
 	public Links links;
-	public Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
 }

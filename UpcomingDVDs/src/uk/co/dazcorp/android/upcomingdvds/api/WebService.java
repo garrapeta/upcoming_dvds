@@ -9,6 +9,7 @@ import com.google.gson.GsonBuilder;
 
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
+import retrofit.RetrofitError;
 import retrofit.converter.GsonConverter;
 import uk.co.dazcorp.android.upcomingdvds.DVDApplication;
 import uk.co.dazcorp.android.upcomingdvds.api.models.Upcoming;
@@ -18,7 +19,8 @@ import java.util.Locale;
 public class WebService extends IntentService {
 	public static final String PACKAGE = "uk.co.dazcorp.android.upcomingdvds";
 	public static final String ACTION_RESP = PACKAGE + ".SERVICE_COMPLETE";
-	public static final String ERROR_MSG = "error";
+	public static final String ERROR_MSG = "error_msg";
+	public static final String ERROR = "error";
 	public static final String RESULT = "result";
 	public static final String TAG = "WebService";
 	public static final String TYPE = "type";
@@ -67,28 +69,41 @@ public class WebService extends IntentService {
 			locale = "uk";
 		}
 
-		Upcoming upcoming;
-
-		switch (type) {
-			case DVDApplication.VIEW_DVD:
-				upcoming = mRottenTomartoes.upcomingDVDs(String.valueOf(pageLimit),
-						String.valueOf(page), locale);
-				break;
-			case DVDApplication.VIEW_MOVIES:
-				upcoming = mRottenTomartoes.upcomingMovies(String.valueOf(pageLimit),
-						String.valueOf(page), locale);
-				break;
-			default:
-				upcoming = mRottenTomartoes.upcomingDVDs(String.valueOf(pageLimit),
-						String.valueOf(page), locale);
+		Upcoming upcoming = null;
+		boolean error = false;
+		try {
+			switch (type) {
+				case DVDApplication.VIEW_DVD:
+					upcoming = mRottenTomartoes.upcomingDVDs(String.valueOf(pageLimit),
+							String.valueOf(page), locale);
+					break;
+				case DVDApplication.VIEW_MOVIES:
+					upcoming = mRottenTomartoes.upcomingMovies(String.valueOf(pageLimit),
+							String.valueOf(page), locale);
+					break;
+				default:
+					upcoming = mRottenTomartoes.upcomingDVDs(String.valueOf(pageLimit),
+							String.valueOf(page), locale);
+			}
+		} catch (RetrofitError cause) {
+			if (cause.isNetworkError()) {
+				error = true;
+			}
 		}
-
-		Intent broadcastIntent = new Intent();
-		broadcastIntent.setAction(ACTION_RESP);
-		broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
-		broadcastIntent.putExtra(RESULT, upcoming);
-		broadcastIntent.putExtra(TYPE, type);
-		sendBroadcast(broadcastIntent);
+		if (upcoming != null && !error) {
+			Intent broadcastIntent = new Intent();
+			broadcastIntent.setAction(ACTION_RESP);
+			broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
+			broadcastIntent.putExtra(RESULT, upcoming);
+			broadcastIntent.putExtra(TYPE, type);
+			sendBroadcast(broadcastIntent);
+		} else {
+			Intent broadcastIntent = new Intent();
+			broadcastIntent.setAction(ACTION_RESP);
+			broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
+			broadcastIntent.putExtra(ERROR, error);
+			sendBroadcast(broadcastIntent);
+		}
 
 	}
 }

@@ -20,6 +20,8 @@ import com.novoda.imageloader.core.model.ImageTagFactory;
 
 import uk.co.dazcorp.android.upcomingdvds.api.models.Movie;
 
+import java.util.Locale;
+
 /**
  * A fragment representing a single DVD detail screen. This fragment is either contained in a {@link DVDListActivity} in two-pane mode (on tablets) or a {@link DVDDetailActivity} on handsets.
  */
@@ -143,7 +145,7 @@ public class DVDDetailFragment extends Fragment {
 
 	private void setIcon(TextView tv, String type) {
 		if (type != null && !type.isEmpty()) {
-			type = type.toUpperCase();
+			type = type.toUpperCase(Locale.ENGLISH);
 
 			if (type.equals(DVDApplication.CRITIC_CERTIFIED)) {
 				tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_certified_fresh, 0, 0, 0);

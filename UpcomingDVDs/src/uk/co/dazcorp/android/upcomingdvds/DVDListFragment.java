@@ -22,6 +22,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.manuelpeinado.refreshactionitem.ProgressIndicatorType;
@@ -59,7 +60,14 @@ public class DVDListFragment extends ListFragment implements RefreshActionListen
 	public class ResponseReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			// String result = intent.getExtras().getString(WebService.RESULT);
+			boolean error = intent.getExtras().getBoolean(ERROR);
+			if (error) {
+				Toast.makeText(getActivity(), getString(R.string.something_went_wrong),
+						Toast.LENGTH_LONG).show();
+				mRefreshActionItem.showProgress(false);
+				mSwipeLayout.setRefreshing(false);
+				return;
+			}
 			int type = intent.getExtras().getInt(WebService.TYPE);
 			Upcoming upcoming = (Upcoming) intent.getExtras().getSerializable(WebService.RESULT);
 

@@ -1,8 +1,6 @@
 package uk.co.dazcorp.android.upcomingdvds.api.models;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ReleaseDates implements Serializable {
 
@@ -10,6 +8,5 @@ public class ReleaseDates implements Serializable {
 
 	public String theater;
 	public String dvd;
-	public Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
 }

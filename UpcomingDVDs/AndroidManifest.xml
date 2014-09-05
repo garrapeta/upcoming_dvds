@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="uk.co.dazcorp.android.upcomingdvds"
-    android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionCode="2"
+    android:versionName="1.1" >
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="18" />
+        android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -36,21 +36,17 @@
         </activity>
 
         <service
-            android:name="uk.co.dazcorp.android.upcomingdvds.WebService"
+            android:name="uk.co.dazcorp.android.upcomingdvds.api.WebService"
             android:exported="false" >
         </service>
-
-        <provider
-            android:name="uk.co.dazcorp.android.upcomingdvds.DVDProvider"
-            android:authorities="uk.co.dazcorp.android.upcomingdvds.provider"
-            android:enabled="false"
-            android:exported="false" >
-        </provider>
 
         <activity
             android:name="uk.co.dazcorp.android.upcomingdvds.AboutActivity"
             android:label="@string/title_activity_about"
             android:parentActivityName="uk.co.dazcorp.android.upcomingdvds.DVDListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DVDListActivity" />
         </activity>
     </application>
 

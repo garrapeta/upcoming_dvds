@@ -1,8 +1,6 @@
 package uk.co.dazcorp.android.upcomingdvds.api.models;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Ratings implements Serializable {
 
@@ -12,6 +10,5 @@ public class Ratings implements Serializable {
 	public int criticsScore;
 	public String audienceRating;
 	public int audienceScore;
-	public Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
 }

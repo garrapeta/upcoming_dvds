@@ -1,8 +1,6 @@
 package uk.co.dazcorp.android.upcomingdvds.api.models;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Links implements Serializable {
 
@@ -13,6 +11,5 @@ public class Links implements Serializable {
 	public String cast;
 	public String reviews;
 	public String similar;
-	public Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
 }
