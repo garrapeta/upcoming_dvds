@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="uk.co.dazcorp.android.upcomingdvds"
+    android:versionCode="2"
+    android:versionName="1.1">
+
+    <uses-sdk />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:name="uk.co.dazcorp.android.upcomingdvds.DVDApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name="uk.co.dazcorp.android.upcomingdvds.DVDListActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="uk.co.dazcorp.android.upcomingdvds.DVDDetailActivity"
+            android:label="@string/title_dvd_detail"
+            android:parentActivityName=".DVDListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DVDListActivity" />
+        </activity>
+
+        <service
+            android:name="uk.co.dazcorp.android.upcomingdvds.api.WebService"
+            android:exported="false"></service>
+
+        <activity
+            android:name="uk.co.dazcorp.android.upcomingdvds.AboutActivity"
+            android:label="@string/title_activity_about"
+            android:parentActivityName="uk.co.dazcorp.android.upcomingdvds.DVDListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DVDListActivity" />
+        </activity>
+    </application>
+
+</manifest>
